@@ -1,5 +1,5 @@
 import { User } from 'src/auth/entities/user.entity';
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum AllowedStatus{
     'NOT_STARTED', 
@@ -22,13 +22,10 @@ export class Project {
     status: AllowedStatus
 
     @ManyToMany(() => User, user => user.project_ids)
-    user_ids: User[]
+    employer_ids: User[]
 
-    @Column()
-    employer_ids: 
-    
-    @Column()
-    client_ids: 
+    @ManyToOne(() => User, user => user.project_ids)
+    client_ids: User[]
 
     @Column('timestamp')
     created_at: Date

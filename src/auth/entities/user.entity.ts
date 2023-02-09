@@ -35,21 +35,23 @@ export class User {
 
     @ManyToMany( () => Role, role => role.user_ids)
     @JoinTable({
+        name: 'user_role',
         joinColumn: {
-            name: 'user_id',
+            name: 'user_ids',
             referencedColumnName: 'id'
         },
         inverseJoinColumn:{
-            name: 'role_id',
+            name: 'role_ids',
             referencedColumnName: 'id'
         }
     })
     role_ids: Role[]
 
-    @ManyToMany (() => Project, project => project.user_ids)
+    @ManyToMany (() => Project, project => project.client_ids)
     @JoinTable({ 
+        name: 'user_employer_project',
         joinColumn: {
-            name: 'user_id',
+            name: 'employer_ids',
             referencedColumnName: 'id'
         },
         inverseJoinColumn: {
