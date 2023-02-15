@@ -24,7 +24,7 @@ export class User {
     @Column('varchar', {length: 20})
     password: string;
 
-    @Column('text', {nullable: true, default: "../../../public/pictures/default-profile-picture.jpg"})
+    @Column('text', {default: "../../../public/pictures/default-profile-picture.jpg"})
     profile_pic: string; 
 
     @Column({
