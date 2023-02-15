@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Project } from 'src/project/entities/project.entity';
 import { Role } from 'src/role/entities/role.entity';
+import { RoleModule } from 'src/role/role.module';
 
 @Module({
   controllers: [AuthController],

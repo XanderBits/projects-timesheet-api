@@ -1,38 +1,61 @@
 import { User } from 'src/auth/entities/user.entity';
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-export enum AllowedStatus{
-    'NOT_STARTED', 
-    'IN_PROGRESS', 
-    'COMPLETED',
+export enum AllowedStatus {
+  notStarted = 'NOT_STARTED',
+  inProgress = 'IN_PROGRESS',
+  completed = 'COMPLETED',
 }
 
 @Entity()
 export class Project {
-    @PrimaryGeneratedColumn('uuid')
-    id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column('char', {unique: true, length: 50})
-    name: string;
+  @Column('char', { unique: true, length: 50 })
+  name: string;
 
-    @Column('char', {length: 255}) 
-    description: string;
+  @Column('char', { length: 255, nullable: true })
+  description: string;
 
-    @Column({type: 'enum', enum: AllowedStatus})
-    status: AllowedStatus
+  @Column({
+    type: 'enum',
+    enum: AllowedStatus,
+    default: AllowedStatus.notStarted
+  })
+  status: AllowedStatus;
 
-    @ManyToMany(() => User, user => user.project_ids)
-    employer_ids: User[]
+  @ManyToMany(() => User, (user) => user.project_ids)
+  employer_ids: User[];
 
-    @ManyToOne(() => User, user => user.project_ids)
-    client_ids: User[]
+  @ManyToOne(() => User, (user) => user.project_ids)
+  client_ids: User[];
 
-    @Column('timestamp')
-    created_at: Date
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  createdAt: Date;
 
-    @Column('timestamp')
-    updated_at: Date
-    
-    @Column('timestamp')
-    deleted_at: Date
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    onUpdate: 'CURRENT_TIMESTAMP(6)',
+  })
+  updatedAt: Date;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    onUpdate: 'CURRENT_TIMESTAMP(6)',
+  })
+  deleteAt: Date;
 }
