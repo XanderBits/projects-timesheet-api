@@ -1,11 +1,36 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Role } from 'src/role/entities/role.entity';
+import { Repository } from 'typeorm';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
+import { User } from './entities/user.entity';
+
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+    @InjectRepository(Role)
+    private readonly roleRepository: Repository<Role>
+  ){}
+
+  async create(createUserDto: CreateUserDto): Promise<User>{
+    try{
+      const {role_ids, ...userData} = createUserDto
+      const emailExists = await this.userRepository.findOneBy({email: userData.email});
+      if(emailExists !== null) throw new HttpException(`Email address ${userData.email} already exists`, HttpStatus.BAD_REQUEST);
+
+      const role = await this.roleRepository.findBy({id: role_ids})
+      if(role.length == 0) throw new NotFoundException("The provided Role doesnt exists")
+      const user = this.userRepository.create(userData);
+      user.role_ids = role
+      return await this.userRepository.save(user);
+    }
+    catch(error){
+      return error
+    }
   }
 
   findAll() {
