@@ -21,7 +21,7 @@ export class User {
     @Column('text',{ unique: true })
     email: string;
 
-    @Column('varchar')
+    @Column('varchar', { select: false })
     password: string;
 
     @Column('text', {default: "../../../public/pictures/default-profile-picture.jpg"})
