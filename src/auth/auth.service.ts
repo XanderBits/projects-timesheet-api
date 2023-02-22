@@ -43,9 +43,11 @@ export class AuthService {
         where: { email },
         select: { email: true, password: true }
       })
-      console.log(password, user.password, bcrypt.compareSync(password, user.email))
+
       if( !user ) throw new UnauthorizedException("Incorrect email or password")
+
       if( !bcrypt.compareSync(password, user.password) ) throw new UnauthorizedException("Incorrect  email or password")
+      
       return user;
     }catch(error){
       return error
