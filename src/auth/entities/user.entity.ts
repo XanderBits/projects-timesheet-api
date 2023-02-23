@@ -1,6 +1,6 @@
 import { Project } from "src/project/entities/project.entity";
 import { Role } from "src/role/entities/role.entity";
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 export enum UserType{
     'CLIENT',
@@ -24,6 +24,7 @@ export class User {
     @Column('varchar', { select: false })
     password: string;
 
+    //TODO MODIFICAR LA RUTA CON PATH
     @Column('text', {default: "../../../public/pictures/default-profile-picture.jpg"})
     profile_pic: string; 
 
@@ -32,7 +33,7 @@ export class User {
         enum: UserType,
         default: 0
     })
-    user_type: UserType 
+    user_type: UserType;
 
     @ManyToMany( () => Role, role => role.user_ids)
     @JoinTable({
@@ -46,7 +47,7 @@ export class User {
             referencedColumnName: 'id'
         }
     })
-    role_ids: Role[]
+    role_ids: Role[];
 
     @ManyToMany (() => Project, project => project.client_ids, {nullable: true})
     @JoinTable({ 
@@ -60,21 +61,31 @@ export class User {
             referencedColumnName: 'id'
         }
     })
-    project_ids: Project[] 
+    project_ids: Project[];
     
     @CreateDateColumn({
         type: 'timestamp',
         default: () => 'CURRENT_TIMESTAMP(6)',
       })
-    created_at: Date
+    created_at: Date;
 
     @UpdateDateColumn({
         type: 'timestamp',
         default: () => 'CURRENT_TIMESTAMP(6)',
         onUpdate: 'CURRENT_TIMESTAMP(6)',
       })
-    updated_at: Date
+    updated_at: Date;
     
     @Column('timestamp', {default: null})
-    deleted_at: Date
+    deleted_at: Date;
+    
+    @BeforeInsert()
+    checkFieldsBeforeInsert() {
+        this.email = this.email.toLowerCase().trim();
+    }
+
+    @BeforeUpdate()
+    checkFieldsBeforeUpdate() {
+        this.checkFieldsBeforeInsert();   
+    }
 }
