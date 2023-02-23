@@ -8,7 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [AuthModule, ProjectModule, RoleModule, ConfigModule.forRoot(),
+  imports: [ ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
     type: 'postgres',
     host: process.env.DB_HOST,
@@ -18,7 +18,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     password: process.env.DB_PASSWORD,      
     autoLoadEntities: true,
     synchronize: true,
-  }),],
+  }),
+  AuthModule, 
+
+  ProjectModule, 
+  
+  RoleModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
