@@ -1,5 +1,5 @@
 import { User } from 'src/auth/entities/user.entity';
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Role {
@@ -12,4 +12,15 @@ export class Role {
 
   @ManyToMany(() => User, (user) => user.role_ids)
   user_ids: User[];
+
+  @BeforeInsert()
+    checkFieldsBeforeInsert() {
+        this.name = this.name.toLowerCase().trim();
+    }
+    
+  @BeforeUpdate()
+    checkFieldsBeforeUpdate() {
+        this.checkFieldsBeforeInsert();   
+    }
 }
+
