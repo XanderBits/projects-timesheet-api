@@ -16,7 +16,7 @@ export class SeedService {
   async runSeed() {
     await this.deleteAllTables();
     await this.insertRoles();
-    return 'test';
+    return 'SEED EXECUTED';
   }
 
   private async insertRoles() {
