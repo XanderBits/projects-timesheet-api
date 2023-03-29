@@ -71,4 +71,21 @@ export class RoleService {
 
     throw new InternalServerErrorException(`Please check server logs`);
   }
+
+
+  async deleteAllRoles(){
+
+    const query = this.roleRepository.createQueryBuilder('product');
+
+    try {
+      return await query
+        .delete()
+        .where({})
+        .execute();
+
+    } catch (error) {
+
+      this.handleDBErrors(error)
+    }
+  }
 }

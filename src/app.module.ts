@@ -6,6 +6,7 @@ import { RoleModule } from './role/role.module';
 import { ProjectModule } from './project/project.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [ ConfigModule.forRoot(),
@@ -23,7 +24,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
   ProjectModule, 
   
-  RoleModule,
+  RoleModule, SeedModule,
   ],
   controllers: [AppController],
   providers: [AppService],
