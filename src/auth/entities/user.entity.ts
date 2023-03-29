@@ -18,7 +18,7 @@ export class User {
     @Column('varchar', {length: 50})
     lastname: string; 
 
-    @Column('text',{ unique: true })
+    @Column('text',{ unique: true, select: false })
     email: string;
 
     @Column('varchar', { select: false })
