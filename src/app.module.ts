@@ -1,10 +1,10 @@
+import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './role/role.module';
 import { ProjectModule } from './project/project.module';
-import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SeedModule } from './seed/seed.module';
 
@@ -21,9 +21,7 @@ import { SeedModule } from './seed/seed.module';
     synchronize: true,
   }),
   AuthModule, 
-
   ProjectModule, 
-  
   RoleModule, SeedModule,
   ],
   controllers: [AppController],
