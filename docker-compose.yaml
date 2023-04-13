@@ -5,7 +5,7 @@ services:
     image: postgres:15.1
     restart: on-failure
     ports:
-      - "6432:5432"
+      - "${DB_PORT}:5432"
     environment:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}      
