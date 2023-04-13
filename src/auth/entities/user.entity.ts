@@ -1,3 +1,4 @@
+import path from "path";
 import { Project } from "src/project/entities/project.entity";
 import { Role } from "src/role/entities/role.entity";
 import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
@@ -24,8 +25,7 @@ export class User {
     @Column('varchar', { select: false })
     password: string;
 
-    //TODO MODIFICAR LA RUTA CON PATH**
-    @Column('text', {default: "../../../public/pictures/default-profile-picture.jpg"})
+    @Column('text', {default: 'default-profile-picture.jpg'})
     profile_pic: string; 
 
     @Column({
