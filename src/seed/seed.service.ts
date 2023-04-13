@@ -1,43 +1,38 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from 'src/role/entities/role.entity';
 import { RoleService } from 'src/role/role.service';
-import { Repository } from 'typeorm';
 import { initialData } from './data/seed-data';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class SeedService {
   constructor(
     private readonly roleService: RoleService,
-    @InjectRepository(Role)
-    private readonly roleRepository: Repository<Role>,
+    private readonly AuthService: AuthService,  
   ) {}
 
   async runSeed() {
-    await this.deleteAllTables();
-    await this.insertRoles();
-    return 'SEED EXECUTED';
+    const role = await this.insertRoles();
+    await this.insertUsers(role);
+    return 'SEED EXECUTED'
   }
 
   private async insertRoles() {
-    const seedRoles = initialData.role;
-
-    const roles: Role[] = [];
-
-    seedRoles.forEach((role) => {
-      roles.push(this.roleRepository.create(role));
-    });
-
-    const dbRoles = await this.roleRepository.save(roles);
-
-    return dbRoles[0];
+    const seedRoles = initialData.roles;
+    const dbRoles = await this.roleService.create( seedRoles );
+    return dbRoles;
   }
 
-  private async deleteAllTables() {
-    await this.roleService.deleteAllRoles();
-
-    // const queryBuilder = this.roleRepository.createQueryBuilder();
-
-    // await queryBuilder.delete().where({}).execute();
+  private async insertUsers(role: Role){
+    const userData = {
+      name: initialData.users.name,
+      lastname: initialData.users.lastname,
+      email: initialData.users.email,
+      password: initialData.users.password,
+      user_type: initialData.users.user_type,
+      role_ids: role.id,
+    }
+    const dbUser = await this.AuthService.create(userData);
+    return dbUser
   }
 }

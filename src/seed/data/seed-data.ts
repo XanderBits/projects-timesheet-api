@@ -1,21 +1,32 @@
+import { UserType } from "src/auth/entities/user.entity"
+import { CreateRoleDto } from "src/role/dto/create-role.dto"
+import { config } from 'dotenv';
 
+config();
 
-interface SeedRole {
-    name: string;
+interface UserData {
+    name: string
+    lastname: string
+    email: string
+    password: string
+    user_type: UserType
 }
 
 interface SeedData {
-    role: SeedRole[]
+    users: UserData
+    roles: CreateRoleDto
 }
 
 export const initialData: SeedData = {
-    
-    role: [
+    users: 
         {
-             name: 'CLIENT'
+             name: 'ROOT',
+             lastname: 'USER',
+             email: process.env.ROOT_EMAIL,
+             password: process.env.ROOT_PASSWORD,
+             user_type: 0
         },
-        {
-            name: 'EMPLOYEE'
-        }
-    ]
+    roles: {
+        name: 'admin'
+    }
 }
